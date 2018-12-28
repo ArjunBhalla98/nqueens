@@ -30,8 +30,9 @@ def run(n):
 
         # Place pieces on the board
         for x, y in instance.locations:
+            instance.place(x, y)
 
-            # Calculate fitness of each object, sort dna_pieces by fitness
+        # Calculate fitness of each object, sort dna_pieces by fitness
 
         for el in dna_pieces:
             el.calc_fitness(instance)
