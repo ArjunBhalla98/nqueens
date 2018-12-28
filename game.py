@@ -19,7 +19,7 @@ class Game(object):
         self.board = np.zeros((8, 8), dtype=int)
         self.locations = init_locs
 
-    def place(self, y, x):
+    def place(self, x, y):
         """
         Place will 'place' a queen in a location on the 8x8 board and return
         True if the placement is successful. Returns False if there already

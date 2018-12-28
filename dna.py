@@ -11,6 +11,7 @@ class Dna():
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.fitness = 0
 
     def calc_fitness(self, game):
         """
@@ -18,4 +19,5 @@ class Dna():
         DNA object. game is a Game object.
         """
 
-        return 8 - game.num_cross(self.x, self.y)
+        self.fitness = 8 - game.num_cross(self.x, self.y)
+        return self.fitness
