@@ -9,7 +9,7 @@ class Game(object):
         - n: The number of queens in the game.
         - board: an 8x8 array of integers. 0 represents an empty square, 1 a filled
         square.
-        - locations: a list of tuples of (y, x) co-ordinates. 
+        - locations: a list of tuples of (x, y) co-ordinates.
         None of the tuples are duplicates.
     """
 
@@ -30,15 +30,14 @@ class Game(object):
         if x > 7 or y > 7 or x < 0 or y < 0:
             return False
 
-        if (y, x) in self.locations:
+        if (x, y) in self.locations:
             return False
 
         if len(self.locations) >= self.n:
             last_loc = self.locations.pop()
-            self.board[last_loc[0]][last_loc[1]] = 0
+            self.board[last_loc[1]][last_loc[0]] = 0
 
-        self.locations.append((y, x))
-
+        self.locations.append((x, y))
         self.board[y][x] = 1
 
         return True
@@ -48,8 +47,8 @@ class Game(object):
         Clear_board removes all queens from the board, and empties locations.
         """
 
+        self.board = np.zeros((8, 8), dtype=int)
         self.locations = []
-        self.board = np.array((8, 8), dtype=int)
 
     def has_won(self):
         """
@@ -63,12 +62,11 @@ class Game(object):
 
         all_col_sum = np.sum(self.board, axis=0)
 
-        for y, x in self.locations:
+        for x, y in self.locations:
             sum_row = sum(self.board[y])
             sum_col = all_col_sum[x]
-            sum_diag = sum(np.diagonal(self.board, x))
-            sum_diag_minor = sum(np.diagonal(
-                np.rot90(self.board), -self.board.shape[1] + (x + 1) + 1))
+            sum_diag = sum(np.diagonal(self.board, y-x))
+            sum_diag_minor = sum(np.diagonal(self.board[:, ::-1], 8-y-1-x))
 
             if sum_row > 1 or sum_col > 1 or sum_diag > 1 or sum_diag_minor > 1:
                 return False
@@ -83,8 +81,7 @@ class Game(object):
         all_col_sum = np.sum(self.board, axis=0)
         sum_row = sum(self.board[y])
         sum_col = all_col_sum[x]
-        sum_diag = sum(np.diagonal(self.board, x))
-        sum_diag_minor = sum(np.diagonal(
-            np.rot90(self.board), -self.board.shape[1] + (x + 1) + 1))
+        sum_diag = sum(np.diagonal(self.board, y-x))
+        sum_diag_minor = sum(np.diagonal(self.board[:, ::-1], 8-y-1-x))
 
-        return sum_row + sum_col + sum_diag + sum_diag_minor - 4
+        return max(sum_row + sum_col + sum_diag + sum_diag_minor - 4, 0)
