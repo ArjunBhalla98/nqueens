@@ -104,4 +104,4 @@ def gen_new_pos(arr, n, mut_rate):
 
 
 if __name__ == '__main__':
-    run(8)
+    run(5)
